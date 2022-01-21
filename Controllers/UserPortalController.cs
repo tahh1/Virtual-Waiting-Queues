@@ -54,12 +54,12 @@ namespace FinalProject.Controllers
             var found = repository.GetUserById(CurrentUser.Id);
             if (newversion.email is not null && repository.GetUserByEmail(newversion.email) is not null)
             {
-                return BadRequest("Email  Already Exists ");
+                return BadRequest(new { message = "Email  Already Exists " });
             }
 
             if(newversion.username is not null && repository.GetUserByName(newversion.username) is not null)
             {
-                return BadRequest("Name Already Exits");
+                return BadRequest(new {message =  "Name Already Exits" });
             }
 
             if (found is null) { return NotFound(); }
@@ -86,7 +86,7 @@ namespace FinalProject.Controllers
             var useremail = repository.GetUserByEmail(NewUser.email);
             if (username is not null || useremail is not null)
             {
-                return BadRequest("Username or email already exist");
+                return BadRequest(new { message = "Username or email already exist" });
             }
             UserModel model = new UserModel
             {

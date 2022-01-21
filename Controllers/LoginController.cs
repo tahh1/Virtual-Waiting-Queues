@@ -40,7 +40,7 @@ namespace FinalProject.Controllers
                 return new OkObjectResult(new  { Token = TokenString });
             }
 
-            else { return NotFound("User Not Found"); }
+            else { return NotFound(new { message = "User Not Found" }); }
             
 
         }

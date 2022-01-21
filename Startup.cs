@@ -37,8 +37,11 @@ namespace FinalProject
         {
             services.AddSingleton<IMongoClient>(ServiceProvider =>
             {
-                var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-                return new MongoClient(settings.ConnectionString);
+                
+                var settings = MongoClientSettings.FromConnectionString("mongodb+srv://taha:mainuserpassword@webservice.6ihnp.mongodb.net/Project?retryWrites=true&w=majority");
+                /*Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();*/
+                return new MongoClient(settings);
+
 
             });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {

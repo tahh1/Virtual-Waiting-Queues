@@ -49,9 +49,9 @@ namespace FinalProject.Controllers.Admin
             var haveRoom = Waitingrepository.GetRoomById(Id.Id);
             var user = UserRepos.GetUserById(Id.Id);
             if (user is null)  { return NotFound(); }
-            if (haveRoom is not null ) { return BadRequest("User already have a waiting room"); }
-            if(user is not null & user.Role=="Business Owner" & haveBusiness is null) { return BadRequest("User needs to create a business first"); }
-            if(user is not null & user.Role!="Business Owner") { return BadRequest("User can't create a business or waiting room"); }
+            if (haveRoom is not null ) { return BadRequest(new  { message ="User already have a waiting room" }); }
+            if(user is not null & user.Role=="Business Owner" & haveBusiness is null) { return BadRequest(new { message = "User needs to create a business first" }); }
+            if(user is not null & user.Role!="Business Owner") { return BadRequest(new { message = "User can't create a business or waiting room" }); }
 
             WaitingRoomModel model = new WaitingRoomModel
             {

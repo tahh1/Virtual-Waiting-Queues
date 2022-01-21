@@ -42,11 +42,11 @@ namespace FinalProject.Controllers
         {
             var CurrentUser = TokenCurrentUser.GetCurrenttUser();
             var Room = Roomrepository.GetRoomById(Id.Id);
-            if (Room is null) { return BadRequest("There is no room with this Id"); }
+            if (Room is null) { return BadRequest(new { message = "There is no room with this Id" }); }
             if (Room.is_open == true)
             {
                 int index = Room.queue.FindIndex(y => y.Id == CurrentUser.Id);
-                if (index != -1) { return BadRequest("You Already Are in the room"); }
+                if (index != -1) { return BadRequest( new { message = "You Already Are in the room" }); }
                 UserWaitingRoomDTO User = new UserWaitingRoomDTO
                 {
                     Id = CurrentUser.Id,
@@ -63,7 +63,7 @@ namespace FinalProject.Controllers
             }
             else
             {
-                return BadRequest("The Room is closed and can't Accept new people");
+                return BadRequest(new {message = "The Room is closed and can't Accept new people" });
             }
         }
 
@@ -76,7 +76,7 @@ namespace FinalProject.Controllers
             var CurrentUser = TokenCurrentUser.GetCurrenttUser();
             var Room = Roomrepository.GetRoomById(Id.Id);
             int index = Room.queue.FindIndex(y => y.Id == CurrentUser.Id);
-            if (index == -1) { return BadRequest("You're not in the room"); }
+            if (index == -1) { return BadRequest(new {message = "You're not in the room" }); }
             List<UserWaitingRoomDTO> NewList = Room.queue;
             NewList.RemoveAt(index);
             WaitingRoomModel NewRoom = Room with { queue = NewList };

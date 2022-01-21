@@ -41,7 +41,7 @@ namespace FinalProject.Controllers
             var Business = repository.GetBusinessById(CurrentUser.Id);
             if (Business is null)
             {
-                return NotFound("Business Not found");
+                return NotFound(new { message = "Business Not found" });
             }
             return Business;
         }
@@ -72,7 +72,7 @@ namespace FinalProject.Controllers
             var found = repository.GetBusinessById(CurrentUser.Id);
      
 
-            if (found is null) { return NotFound("Business Not Found"); }
+            if (found is null) { return NotFound(new { message = "Business Not Found" }); }
 
             BusinessModel model = found with
             {
@@ -106,7 +106,7 @@ namespace FinalProject.Controllers
             var haveBusiness = repository.GetBusinessById(CurrentUser.Id);
             if (haveBusiness is not null)
             {
-                return BadRequest("You Already Have A business with this Account");
+                return BadRequest(new { message ="You Already Have A business with this Account"});
             }
             BusinessModel model = new BusinessModel
             {

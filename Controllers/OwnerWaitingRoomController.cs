@@ -88,7 +88,7 @@ namespace FinalProject.Controllers
             var CurrentUser = TokenCurrentUser.GetCurrenttUser();
             var Room = Roomrepository.GetRoomById(CurrentUser.Id);
             int index = Room.queue.FindIndex(y => y.Id == Id.Id);
-            if(index == -1) { return BadRequest("No user with this id in your Room"); }
+            if(index == -1) { return BadRequest(new { message = "No user with this id in your Room" }); }
             Room.queue.RemoveAt(index);
             Roomrepository.UpdateWaitingRoom(Room);
             return NoContent();

@@ -75,7 +75,7 @@ namespace FinalProject.Controllers
         public ActionResult UpdateUser(AdminUserUpdateDTO newversion)
         {
             var found = repository.GetUserById(newversion.Id);
-            if (found is null) { return BadRequest("There is no user with provided Id"); }
+            if (found is null) { return BadRequest(new { message = "There is no user with provided Id" }); }
             if (newversion.email is not null && repository.GetUserByEmail(newversion.email) is not null)
             {
                 return BadRequest("Email  Already Exists ");
@@ -83,7 +83,7 @@ namespace FinalProject.Controllers
 
             if (newversion.username is not null && repository.GetUserByName(newversion.username) is not null)
             {
-                return BadRequest("Name Already Exits");
+                return BadRequest(new { message = "Name Already Exits" });
             }
 
             if (found is null) { return NotFound(); }
@@ -110,7 +110,7 @@ namespace FinalProject.Controllers
             var useremail = repository.GetUserByEmail(NewUser.email);
             if (username is not null || useremail is not null)
             {
-                return BadRequest("Username or email already exist");
+                return BadRequest(new { message = "Username or email already exist" });
             }
             UserModel model = new UserModel
             {

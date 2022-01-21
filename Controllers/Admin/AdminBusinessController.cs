@@ -45,7 +45,7 @@ namespace FinalProject.Controllers.Admin
             var Business = repository.GetBusinessById(Id.Id);
             if (Business is null)
             {
-                return NotFound("Business Not Found");
+                return NotFound(new {message = "Business Not Found"});
             }
             return Business;
         }
@@ -61,7 +61,7 @@ namespace FinalProject.Controllers.Admin
             var found = repository.GetBusinessById(newversion.Id);
 
 
-            if (found is null) { return NotFound("Business Not Found Or id not provided"); }
+            if (found is null) { return NotFound(new { message = "Business Not Found Or id not provided" }); }
 
             BusinessModel model = found with
             {
@@ -94,12 +94,12 @@ namespace FinalProject.Controllers.Admin
         public ActionResult<BusinessModel> Register(AdminBusinessRegDTO NewBusiness )
         {
             var User = UserRepo.GetUserById(NewBusiness.Id);
-            if (User is null) { return BadRequest("There is no such user with this Id"); }
-            if (User.Role !="Business Owner") { return BadRequest($"{User.Name} is not a business Owner , You can't create a business for him"); }
+            if (User is null) { return BadRequest(new { message = "There is no such user with this Id" }); }
+            if (User.Role !="Business Owner") { return BadRequest(new { message = $"{User.Name} is not a business Owner , You can't create a business for him" }); }
             var haveBusiness = repository.GetBusinessById(NewBusiness.Id);
             if (haveBusiness is not null)
             {
-                return BadRequest($"{User.Name} Already Have A business with this Account");
+                return BadRequest(new { message = $"{User.Name} Already Have A business with this Account" });
             }
             BusinessModel model = new BusinessModel
             {
