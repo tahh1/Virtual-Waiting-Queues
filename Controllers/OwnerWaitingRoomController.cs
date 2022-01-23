@@ -80,7 +80,7 @@ namespace FinalProject.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete")]
         [Authorize(Roles = "Business Owner")]
 
         public ActionResult RemoveUser(IdDTO Id)

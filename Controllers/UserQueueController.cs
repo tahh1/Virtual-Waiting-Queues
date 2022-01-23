@@ -68,7 +68,7 @@ namespace FinalProject.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("remove")]
         [Authorize]
         //Remove user from room : your id from token and room id in body 
         public ActionResult RemoveMe(IdDTO Id)
@@ -84,7 +84,7 @@ namespace FinalProject.Controllers
             return NoContent();
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("enter")]
         [Authorize]
         //Enter a queue (queeue id in body)
 

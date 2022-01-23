@@ -55,7 +55,7 @@ namespace FinalProject.Controllers
         }
 
 
-        [HttpPost("{id}")]
+        [HttpPost("any")]
         [Authorize]
         //User //Anyonewith Token(remove id field and work with id provided in token)
         public ActionResult<BusinessModel> AnyBusiness(IdDTO Id)
