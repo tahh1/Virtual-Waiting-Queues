@@ -35,7 +35,7 @@ namespace FinalProject.Controllers
 
 
 
-        [HttpPost("{id}")]
+        [HttpPost]
         [Authorize]
         //Add yourself to room if its open (Room Id In Body)
         public ActionResult AddMe(IdDTO Id)
@@ -84,7 +84,7 @@ namespace FinalProject.Controllers
             return NoContent();
         }
 
-        [HttpGet("{id}")]
+        [HttpPost("{id}")]
         [Authorize]
         //Enter a queue (queeue id in body)
 
@@ -92,7 +92,7 @@ namespace FinalProject.Controllers
         {
             var CurrentUser = TokenCurrentUser.GetCurrenttUser();
             var Room = Roomrepository.GetRoomById(Id.Id);
-            if (Room is null) { return NotFound(); }
+            if (Room is null) { return NotFound( new { message ="There no room found"}); }
 
             return Room;
 

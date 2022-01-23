@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using FinalProject.DataModels.DTO_s;
 namespace FinalProject.Controllers
 {
     [Route("api/[controller]")]
@@ -54,6 +54,19 @@ namespace FinalProject.Controllers
             return Businesses;
         }
 
+
+        [HttpPost("{id}")]
+        [Authorize]
+        //User //Anyonewith Token(remove id field and work with id provided in token)
+        public ActionResult<BusinessModel> AnyBusiness(IdDTO Id)
+        {
+            var Business = repository.GetBusinessById(Id.Id);
+            if (Business is null)
+            {
+                return NotFound(new { message = "Business Not Found" });
+            }
+            return Business;
+        }
 
 
         //[HttpGet] (leave it for client side filtering)
