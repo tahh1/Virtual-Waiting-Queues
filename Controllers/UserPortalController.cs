@@ -39,7 +39,7 @@ namespace FinalProject.Controllers
             var user = repository.GetUserById(CurrentUser.Id);
             if (user is null)
             {
-                return NotFound(new {message ="User Not Found");
+                return NotFound(new { message = "User Not Found" });
             }
             return user.PublicVM();
         }
