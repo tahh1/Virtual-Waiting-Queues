@@ -49,16 +49,21 @@ namespace FinalProject
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidateLifetime = false,
+                    ValidateLifetime = true,
+                    RequireExpirationTime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = Configuration["Jwt:Issuer"],
                     ValidAudience = Configuration["Jwt:Audience"],
+                    ClockSkew=TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
 
                 };
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ITokenGenerator, TokenGenerator>();
+            services.AddSingleton<IrefreshTokenGenerator, refreshTokenGenerator>();
+            services.AddSingleton<IRefreshTokenValidator, RefreshTokenValidator>();
+            services.AddSingleton<IRefreshTokenRepos, RefreshTokenRepos>();
             services.AddSingleton<ITokenCurrentUser, TokenCurrentUser>();
             services.AddMvc();
             services.AddControllers();
