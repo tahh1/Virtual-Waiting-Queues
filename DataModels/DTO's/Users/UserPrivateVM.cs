@@ -11,6 +11,8 @@ namespace FinalProject.DataModels.DTO_s
 
         public String Token { get; init; }
 
+        public String refreshtoken { get; init; }
+
         public string UserName { get; init; }
 
         public string Name { get; init; }

@@ -10,7 +10,7 @@ namespace FinalProject.Other_classes
     public static class PrivateUserVMConverter
     {
 
-        public static UserPrivateVM PrivateVM(this UserModel item , string TokenString)
+        public static UserPrivateVM PrivateVM(this UserModel item , string TokenString , string refreshtoken)
         {
             return new UserPrivateVM()
             {
@@ -20,6 +20,7 @@ namespace FinalProject.Other_classes
                 Role = item.Role,
                 Phone_Number = item.Phone_Number,
                 Token = TokenString,
+                refreshtoken = refreshtoken,
                 CreateDate = DateTimeOffset.UtcNow,
                 Name = item.Name
                

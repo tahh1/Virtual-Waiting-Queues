@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FinalProject.Other_classes.Security;
+using FinalProject.DataModels.DTO_s.security;
 
 namespace FinalProject.Controllers
 {
@@ -19,15 +20,19 @@ namespace FinalProject.Controllers
     {
 
         private readonly IUserRepos repository;
+        private readonly IRefreshTokenRepos refreshRepos;
         private readonly ITokenGenerator TokenGenerator;
+        private readonly IrefreshTokenGenerator refreshTokenGenerator;
         private readonly ITokenCurrentUser TokenCurrentUser;
 
 
-        public UserPortalController(IUserRepos repository , ITokenCurrentUser TokenUser, ITokenGenerator TokenGen)
+        public UserPortalController(IUserRepos repository , ITokenCurrentUser TokenUser, ITokenGenerator TokenGen, IrefreshTokenGenerator refresh, IRefreshTokenRepos refreshTokenRepository)
         {
             this.repository = repository;
             TokenGenerator = TokenGen;
             TokenCurrentUser = TokenUser;
+            refreshTokenGenerator = refresh;
+            refreshRepos = refreshTokenRepository;
         }
 
         [HttpGet]
@@ -70,9 +75,20 @@ namespace FinalProject.Controllers
                 Phone_Number = newversion.phone_number is not null ? newversion.phone_number : found.Phone_Number
 
             };
+            string refreshtoken = refreshTokenGenerator.GeneraterefreshToken();
+            RefreshTokenModel newrefreshToken = new RefreshTokenModel()
+            {
+                Id = Guid.NewGuid(),
+                refreshtoken = refreshtoken,
+                UserId = model.Id
+            };
+
+            refreshRepos.createtoken(newrefreshToken);
+
+
             repository.UpdateUser(model);
             string TokenString = TokenGenerator.GenerateToken(model);
-            var FinalModel = model.PrivateVM(TokenGenerator.GenerateToken(model));
+            var FinalModel = model.PrivateVM(TokenGenerator.GenerateToken(model),refreshtoken);
             return Ok(FinalModel);
         }
 
@@ -99,9 +115,18 @@ namespace FinalProject.Controllers
                 Phone_Number = NewUser.phone_number,
                 Name=NewUser.name
             };
+            string refreshtoken = refreshTokenGenerator.GeneraterefreshToken();
+            RefreshTokenModel newrefreshToken = new RefreshTokenModel()
+            {
+                Id = Guid.NewGuid(),
+                refreshtoken = refreshtoken,
+                UserId = model.Id
+            };
+
+            refreshRepos.createtoken(newrefreshToken);
             repository.UserRegister(model);
             string TokenString = TokenGenerator.GenerateToken(model);
-            var FinalModel = model.PrivateVM(TokenGenerator.GenerateToken(model));
+            var FinalModel = model.PrivateVM(TokenGenerator.GenerateToken(model),refreshtoken);
         
 
             return CreatedAtAction(nameof(GetUser), new { id = model.Id }, FinalModel);

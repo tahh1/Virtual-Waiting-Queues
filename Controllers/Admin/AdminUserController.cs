@@ -1,4 +1,5 @@
 ﻿using FinalProject.DataModels.DTO_s;
+using FinalProject.DataModels.DTO_s.security;
 using FinalProject.DataModels.DTO_s.Users;
 using FinalProject.DataModels.Entities;
 using FinalProject.Other_classes;
@@ -23,12 +24,16 @@ namespace FinalProject.Controllers
         private readonly IUserRepos repository;
         private readonly ITokenGenerator TokenGenerator;
         private readonly ITokenCurrentUser TokenCurrentUser;
+        private readonly IRefreshTokenRepos refreshRepos;
+        private readonly IrefreshTokenGenerator refreshTokenGenerator;
 
-        public AdminUserController(IUserRepos repository, ITokenCurrentUser TokenUser, ITokenGenerator TokenGen)
+        public AdminUserController(IUserRepos repository, ITokenCurrentUser TokenUser, ITokenGenerator TokenGen, IrefreshTokenGenerator refresh, IRefreshTokenRepos refreshTokenRepository)
         {
             this.repository = repository;
             TokenGenerator = TokenGen;
             TokenCurrentUser = TokenUser;
+            refreshTokenGenerator = refresh;
+            refreshRepos = refreshTokenRepository;
         }
 
 
@@ -124,9 +129,18 @@ namespace FinalProject.Controllers
                 Phone_Number = NewUser.phone_number,
                 Name = NewUser.name
             };
+            string refreshtoken = refreshTokenGenerator.GeneraterefreshToken();
+            RefreshTokenModel newrefreshToken = new RefreshTokenModel()
+            {
+                Id = Guid.NewGuid(),
+                refreshtoken = refreshtoken,
+                UserId = model.Id
+            };
+
+            refreshRepos.createtoken(newrefreshToken);
             repository.UserRegister(model);
             string TokenString = TokenGenerator.GenerateToken(model);
-            var FinalModel = model.PrivateVM(TokenGenerator.GenerateToken(model));
+            var FinalModel = model.PrivateVM(TokenGenerator.GenerateToken(model),refreshtoken);
 
 
             return CreatedAtAction(nameof(AdminGetUser), new { id = model.Id }, FinalModel);
