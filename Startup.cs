@@ -38,7 +38,7 @@ namespace FinalProject
             services.AddSingleton<IMongoClient>(ServiceProvider =>
             {
                 
-                var settings = MongoClientSettings.FromConnectionString("mongodb+srv://taha:mainuserpassword@webservice.6ihnp.mongodb.net/Project?retryWrites=true&w=majority");
+                var settings = MongoClientSettings.FromConnectionString("");
                 /*Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();*/
                 return new MongoClient(settings);
 
