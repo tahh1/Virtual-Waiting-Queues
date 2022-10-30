@@ -5,9 +5,9 @@ Worked with a NO SQL database. Used Mongodb Atlas to provision a mongodb cluster
 ## Security
 Worked with Token Based Authentication and Role Based Authorization. (Jwt Bearer Tokens)
 ## Design Patterns
-This project uses repository pattern allowing it to be flexible in terms of the type of database chosen ect so feel free to play around with it.
-Worked with the built in DI tools offered by microsoft.
-## Testing and hoting
+This project uses repository pattern allowing it to be flexible in terms of the type of database chosen and abstract the database access in the business logic.
+Worked with the built in DI tools offered by Microsoft.
+## Testing and hosting
 Used postman for testing, used collection variables and code snippets to automate token collection and assignment to collection variables.
 Used Docker to containerize the web service and host it on Heroku.
 ## Notes
